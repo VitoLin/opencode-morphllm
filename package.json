@@ -1,21 +1,35 @@
 {
-  "name": "morphllm-opencode",
+  "name": "opencode-morphllm",
   "version": "1.0.0",
   "author": "Vito Lin",
   "main": "dist/index.js",
-  "dependencies": {
-    "@opencode-ai/plugin": "1.1.36"
-  },
   "description": "OpenCode plugin for MorphLLM",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "bun test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky install"
+  },
   "opencode": {
     "plugin": true
   },
-  "scripts": {
-    "build": "tsc -p tsconfig.json"
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ]
   },
   "type": "module",
   "types": "dist/index.d.ts",
+  "dependencies": {
+    "@morphllm/morphsdk": "^0.2.102",
+    "@opencode-ai/plugin": "1.1.36"
+  },
   "devDependencies": {
-    "bun-types": "^1.3.6"
+    "bun-types": "^1.3.6",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.9.3"
   }
 }

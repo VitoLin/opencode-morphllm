@@ -1,13 +1,14 @@
-import type { McpLocalConfig } from "@opencode-ai/sdk";
+import type { McpLocalConfig } from '@opencode-ai/sdk';
+import { API_KEY } from './const';
 
 export function createBuiltinMcps(): Record<string, McpLocalConfig> {
   return {
     morph_mcp: {
-      type: "local",
-      command: ["npx", "-y", "@morphllm/morphmcp"],
+      type: 'local',
+      command: ['npx', '-y', '@morphllm/morphmcp'],
       environment: {
-        MORPH_API_KEY: process.env.MORPH_API_KEY || "",
-        ENABLED_TOOLS: "edit_file,warpgrep_codebase_search",
+        MORPH_API_KEY: API_KEY,
+        ENABLED_TOOLS: 'edit_file,warpgrep_codebase_search',
       },
       enabled: true,
     },
