@@ -1,8 +1,5 @@
 import type { Part, UserMessage } from '@opencode-ai/sdk';
 import type { RouterInput, RawRouterResult } from '@morphllm/morphsdk';
-export declare function morphModelRouter(
-  userQuery: string
-): Promise<RawRouterResult>;
 export declare function createModelRouterHook(): {
   'chat.message': (
     input: {

@@ -1,10 +1,29 @@
 import { MorphClient } from '@morphllm/morphsdk';
-import { API_KEY } from './const';
+import {
+  API_KEY,
+  MORPH_MODEL_EASY,
+  MORPH_MODEL_MEDIUM,
+  MORPH_MODEL_HARD,
+  MORPH_MODEL_DEFAULT,
+} from './const';
 const morph = new MorphClient({ apiKey: API_KEY });
-export function morphModelRouter(userQuery) {
-  return morph.routers.raw.classify({
-    input: userQuery,
-  });
+function parseModel(s) {
+  if (!s) return { providerID: '', modelID: '' };
+  const [providerID = '', modelID = ''] = s.split('/');
+  return { providerID, modelID };
+}
+function pickModelForDifficulty(difficulty) {
+  const key = String(difficulty).toLowerCase();
+  switch (key) {
+    case 'easy':
+      return parseModel(MORPH_MODEL_EASY);
+    case 'medium':
+      return parseModel(MORPH_MODEL_MEDIUM);
+    case 'hard':
+      return parseModel(MORPH_MODEL_HARD);
+    default:
+      return parseModel(MORPH_MODEL_DEFAULT);
+  }
 }
 export function createModelRouterHook() {
   return {
@@ -16,22 +35,14 @@ export function createModelRouterHook() {
       const classification = await classifier({
         input: promptText,
       });
-      // TODO: allow for user config
-      const pickModelForDifficulty = (difficulty) => {
-        switch (String(difficulty).toLowerCase()) {
-          case 'easy':
-            return { providerID: 'github-copilot', modelID: 'gpt-4.1' };
-          case 'medium':
-            return { providerID: 'github-copilot', modelID: 'gpt-4o' };
-          case 'hard':
-            return { providerID: 'github-copilot', modelID: 'gpt-5-mini' };
-          default:
-            return { providerID: 'github-copilot', modelID: 'gpt-4o' };
-        }
-      };
       const chosen = pickModelForDifficulty(classification?.difficulty);
-      input.model.providerID = chosen.providerID;
-      input.model.modelID = chosen.modelID;
+      const finalProviderID = chosen.providerID || input.model.providerID;
+      const finalModelID = chosen.modelID || input.model.modelID;
+      console.debug(
+        `[Morph Router] Prompt classified as difficulty: ${classification?.difficulty}. Routing to model: ${finalProviderID}/${finalModelID}`
+      );
+      input.model.providerID = finalProviderID;
+      input.model.modelID = finalModelID;
     },
   };
 }
