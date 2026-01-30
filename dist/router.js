@@ -38,9 +38,7 @@ export function createModelRouterHook() {
       const chosen = pickModelForDifficulty(classification?.difficulty);
       const finalProviderID = chosen.providerID || input.model.providerID;
       const finalModelID = chosen.modelID || input.model.modelID;
-      console.debug(
-        `[Morph Router] Prompt classified as difficulty: ${classification?.difficulty}. Routing to model: ${finalProviderID}/${finalModelID}`
-      );
+
       input.model.providerID = finalProviderID;
       input.model.modelID = finalModelID;
     },
