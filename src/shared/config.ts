@@ -12,6 +12,7 @@ export function getMorphPluginConfigPath(): string {
 interface MorphConfig {
   MORPH_API_KEY?: string;
   MORPH_ROUTER_ENABLED?: boolean;
+  MORPH_ROUTER_ONLY_FIRST_MESSAGE?: boolean;
   MORPH_MODEL_EASY?: string;
   MORPH_MODEL_MEDIUM?: string;
   MORPH_MODEL_HARD?: string;
@@ -92,3 +93,5 @@ export const MORPH_MODEL_HARD = config.MORPH_MODEL_HARD || '';
 export const MORPH_MODEL_DEFAULT =
   config.MORPH_MODEL_DEFAULT || MORPH_MODEL_MEDIUM;
 export const MORPH_ROUTER_ENABLED = config.MORPH_ROUTER_ENABLED ?? true;
+export const MORPH_ROUTER_ONLY_FIRST_MESSAGE =
+  config.MORPH_ROUTER_ONLY_FIRST_MESSAGE ?? false;

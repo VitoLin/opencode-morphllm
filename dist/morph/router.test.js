@@ -14,6 +14,7 @@ vi.mock('../shared/config', () => ({
   MORPH_MODEL_MEDIUM: 'medium/medium',
   MORPH_MODEL_HARD: 'hard/hard',
   MORPH_MODEL_DEFAULT: 'default/default',
+  MORPH_ROUTER_ONLY_FIRST_MESSAGE: false,
 }));
 import { createModelRouterHook, extractPromptText } from './router';
 describe('router.ts', () => {
@@ -210,6 +211,30 @@ describe('router.ts', () => {
       await hook['chat.message'](input, output);
       expect(input.model.providerID).toBe('hard');
       expect(input.model.modelID).toBe('hard');
+    });
+    it('should route all messages when MORPH_ROUTER_ONLY_FIRST_MESSAGE is disabled', async () => {
+      const hook = createModelRouterHook();
+      const classify = vi
+        .fn()
+        .mockResolvedValueOnce({ difficulty: 'hard' })
+        .mockResolvedValueOnce({ difficulty: 'easy' });
+      const sessionID = 'session-456';
+      const input1 = { sessionID, classify };
+      const output1 = {
+        message: {},
+        parts: [{ type: 'text', text: 'first message' }],
+      };
+      await hook['chat.message'](input1, output1);
+      expect(classify).toHaveBeenCalledTimes(1);
+      expect(input1.model.providerID).toBe('hard');
+      const input2 = { sessionID, classify };
+      const output2 = {
+        message: {},
+        parts: [{ type: 'text', text: 'second message' }],
+      };
+      await hook['chat.message'](input2, output2);
+      expect(classify).toHaveBeenCalledTimes(2);
+      expect(input2.model.providerID).toBe('easy');
     });
   });
 });

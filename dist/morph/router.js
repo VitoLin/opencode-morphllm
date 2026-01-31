@@ -5,9 +5,11 @@ import {
   MORPH_MODEL_MEDIUM,
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
+  MORPH_ROUTER_ONLY_FIRST_MESSAGE,
 } from '../shared/config';
 // Lazy initialization to allow mocking in tests
 let morph = null;
+const sessionsWithModelSelected = new Set();
 function getMorphClient() {
   if (!morph) {
     morph = new MorphClient({ apiKey: API_KEY });
@@ -36,6 +38,11 @@ export function createModelRouterHook() {
   return {
     'chat.message': async (input, output) => {
       input.model = input.model ?? { providerID: '', modelID: '' };
+      if (MORPH_ROUTER_ONLY_FIRST_MESSAGE) {
+        if (sessionsWithModelSelected.has(input.sessionID)) {
+          return;
+        }
+      }
       const promptText = extractPromptText(output.parts);
       const classifier =
         input.classify ??
@@ -48,6 +55,9 @@ export function createModelRouterHook() {
       const finalModelID = chosen.modelID || input.model.modelID;
       input.model.providerID = finalProviderID;
       input.model.modelID = finalModelID;
+      if (MORPH_ROUTER_ONLY_FIRST_MESSAGE) {
+        sessionsWithModelSelected.add(input.sessionID);
+      }
     },
   };
 }
