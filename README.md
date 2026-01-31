@@ -2,6 +2,10 @@
 
 This is an OpenCode Plugin for [MorphLLM](https://morphllm.com/). This plugin just adds in `edit_file` and `warpgrep_codebase_search` from MorphLLM to your agent configs as well as the intelligent model router for choosing different models based on the difficulty of the prompt.
 
+Github: https://github.com/VitoLin/opencode-morphllm
+
+NPM: https://www.npmjs.com/package/opencode-morphllm
+
 ## Installation
 
 In `~/.config/opencode/opencode.json`, add the following config:
@@ -12,7 +16,7 @@ In `~/.config/opencode/opencode.json`, add the following config:
 ]
 ```
 
-You can also set the `opencode-morphllm` config variables by creating a .env file at `~/.config/opencode/morph.json`. You can find the provider and model ids from https://models.dev
+You can also set the `opencode-morphllm` config variables by creating a `json` file at `~/.config/opencode/morph.json`. You can find the provider and model ids from https://models.dev
 
 Example configs:
 
