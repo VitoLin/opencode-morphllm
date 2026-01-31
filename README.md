@@ -23,6 +23,20 @@ Example configs:
 ```json
 {
   "MORPH_API_KEY": "YOUR_API_KEY_HERE",
+  "MORPH_ROUTER_CONFIGS": {
+    "MORPH_MODEL_EASY": "github-copilot/gpt-5-mini",
+    "MORPH_MODEL_MEDIUM": "opencode/minimax-m2.1-free",
+    "MORPH_MODEL_HARD": "github-copilot/gemini-2.5-pro",
+    "MORPH_ROUTER_ENABLED": true
+  }
+}
+```
+
+Legacy format (still supported):
+
+```json
+{
+  "MORPH_API_KEY": "YOUR_API_KEY_HERE",
   "MORPH_MODEL_EASY": "github-copilot/gpt-5-mini",
   "MORPH_MODEL_MEDIUM": "opencode/minimax-m2.1-free",
   "MORPH_MODEL_HARD": "github-copilot/gemini-2.5-pro",

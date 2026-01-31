@@ -1,6 +1,15 @@
 export declare function getMorphPluginConfigPath(): string;
+interface MorphRouterConfigs {
+  MORPH_ROUTER_ENABLED?: boolean;
+  MORPH_ROUTER_ONLY_FIRST_MESSAGE?: boolean;
+  MORPH_MODEL_EASY?: string;
+  MORPH_MODEL_MEDIUM?: string;
+  MORPH_MODEL_HARD?: string;
+  MORPH_MODEL_DEFAULT?: string;
+}
 interface MorphConfig {
   MORPH_API_KEY?: string;
+  MORPH_ROUTER_CONFIGS?: MorphRouterConfigs;
   MORPH_ROUTER_ENABLED?: boolean;
   MORPH_ROUTER_ONLY_FIRST_MESSAGE?: boolean;
   MORPH_MODEL_EASY?: string;

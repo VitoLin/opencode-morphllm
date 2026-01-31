@@ -120,6 +120,28 @@ describe('config.ts', () => {
         MORPH_MODEL_DEFAULT: 'default/provider/model',
       });
     });
+    it('should handle nested MORPH_ROUTER_CONFIGS', () => {
+      const content = JSON.stringify({
+        MORPH_API_KEY: 'api-key',
+        MORPH_ROUTER_CONFIGS: {
+          MORPH_ROUTER_ENABLED: true,
+          MORPH_MODEL_EASY: 'easy/provider/model',
+          MORPH_MODEL_MEDIUM: 'medium/provider/model',
+          MORPH_MODEL_HARD: 'hard/provider/model',
+          MORPH_MODEL_DEFAULT: 'default/provider/model',
+        },
+      });
+      writeFileSync(mockMorphJson, content);
+      const result = loadMorphPluginConfig();
+      expect(result?.MORPH_API_KEY).toBe('api-key');
+      expect(result?.MORPH_ROUTER_CONFIGS).toEqual({
+        MORPH_ROUTER_ENABLED: true,
+        MORPH_MODEL_EASY: 'easy/provider/model',
+        MORPH_MODEL_MEDIUM: 'medium/provider/model',
+        MORPH_MODEL_HARD: 'hard/provider/model',
+        MORPH_MODEL_DEFAULT: 'default/provider/model',
+      });
+    });
   });
   describe('loadMorphPluginConfigWithProjectOverride', () => {
     it('should return empty object when no config exists', () => {
