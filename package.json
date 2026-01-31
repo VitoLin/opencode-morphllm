@@ -1,6 +1,6 @@
 {
   "name": "opencode-morphllm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Vito Lin",
   "main": "dist/index.js",
   "description": "OpenCode plugin for MorphLLM",
