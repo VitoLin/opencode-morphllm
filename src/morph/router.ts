@@ -6,7 +6,7 @@ import {
   MORPH_MODEL_MEDIUM,
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
-} from './config';
+} from '../shared/config';
 import type { Part, UserMessage } from '@opencode-ai/sdk';
 import type {
   RouterInput,
@@ -14,7 +14,15 @@ import type {
   ComplexityLevel,
 } from '@morphllm/morphsdk';
 
-const morph = new MorphClient({ apiKey: API_KEY });
+// Lazy initialization to allow mocking in tests
+let morph: MorphClient | null = null;
+
+function getMorphClient(): MorphClient {
+  if (!morph) {
+    morph = new MorphClient({ apiKey: API_KEY });
+  }
+  return morph;
+}
 
 function parseModel(s?: string): { providerID: string; modelID: string } {
   if (!s) return { providerID: '', modelID: '' };
@@ -58,7 +66,7 @@ export function createModelRouterHook() {
 
       const classifier =
         input.classify ??
-        ((args: RouterInput) => morph.routers.raw.classify(args));
+        ((args: RouterInput) => getMorphClient().routers.raw.classify(args));
 
       const classification: RawRouterResult = await classifier({
         input: promptText,

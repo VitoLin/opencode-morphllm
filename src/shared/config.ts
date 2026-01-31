@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { getOpenCodeConfigDir } from './shared/opencode-config-dir';
+import { getOpenCodeConfigDir } from './opencode-config-dir';
 
 const MORPH_PLUGIN_NAME = 'morph';
 

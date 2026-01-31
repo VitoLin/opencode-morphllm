@@ -5,8 +5,15 @@ import {
   MORPH_MODEL_MEDIUM,
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
-} from './config';
-const morph = new MorphClient({ apiKey: API_KEY });
+} from '../shared/config';
+// Lazy initialization to allow mocking in tests
+let morph = null;
+function getMorphClient() {
+  if (!morph) {
+    morph = new MorphClient({ apiKey: API_KEY });
+  }
+  return morph;
+}
 function parseModel(s) {
   if (!s) return { providerID: '', modelID: '' };
   const [providerID = '', modelID = ''] = s.split('/');
@@ -31,7 +38,8 @@ export function createModelRouterHook() {
       input.model = input.model ?? { providerID: '', modelID: '' };
       const promptText = extractPromptText(output.parts);
       const classifier =
-        input.classify ?? ((args) => morph.routers.raw.classify(args));
+        input.classify ??
+        ((args) => getMorphClient().routers.raw.classify(args));
       const classification = await classifier({
         input: promptText,
       });
