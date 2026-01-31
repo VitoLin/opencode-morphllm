@@ -6,7 +6,7 @@ import {
   MORPH_MODEL_MEDIUM,
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
-} from './const';
+} from './config';
 import type { Part, UserMessage } from '@opencode-ai/sdk';
 import type {
   RouterInput,
@@ -68,10 +68,6 @@ export function createModelRouterHook() {
 
       const finalProviderID = chosen.providerID || input.model.providerID;
       const finalModelID = chosen.modelID || input.model.modelID;
-
-      console.debug(
-        `[Morph Router] Prompt classified as difficulty: ${classification?.difficulty}. Routing to model: ${finalProviderID}/${finalModelID}`
-      );
 
       input.model.providerID = finalProviderID;
       input.model.modelID = finalModelID;

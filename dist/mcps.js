@@ -1,4 +1,4 @@
-import { API_KEY } from './const';
+import { API_KEY } from './config';
 export function createBuiltinMcps() {
   return {
     morph_mcp: {

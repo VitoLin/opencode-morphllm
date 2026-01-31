@@ -3,7 +3,7 @@ import type { McpLocalConfig } from '@opencode-ai/sdk';
 
 import { createBuiltinMcps } from './mcps';
 import { createModelRouterHook } from './router';
-import { MORPH_ROUTER_ENABLED } from './const';
+import { MORPH_ROUTER_ENABLED } from './config';
 
 const MorphOpenCodePlugin: Plugin = async () => {
   const builtinMcps: Record<string, McpLocalConfig> = createBuiltinMcps();

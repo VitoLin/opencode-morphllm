@@ -1,5 +1,5 @@
 import type { McpLocalConfig } from '@opencode-ai/sdk';
-import { API_KEY } from './const';
+import { API_KEY } from './config';
 
 export function createBuiltinMcps(): Record<string, McpLocalConfig> {
   return {

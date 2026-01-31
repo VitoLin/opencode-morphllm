@@ -5,7 +5,7 @@ import {
   MORPH_MODEL_MEDIUM,
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
-} from './const';
+} from './config';
 const morph = new MorphClient({ apiKey: API_KEY });
 function parseModel(s) {
   if (!s) return { providerID: '', modelID: '' };
@@ -38,7 +38,6 @@ export function createModelRouterHook() {
       const chosen = pickModelForDifficulty(classification?.difficulty);
       const finalProviderID = chosen.providerID || input.model.providerID;
       const finalModelID = chosen.modelID || input.model.modelID;
-
       input.model.providerID = finalProviderID;
       input.model.modelID = finalModelID;
     },
