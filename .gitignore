@@ -1,3 +1,6 @@
 node_modules/
 .npmrc
 .opencode/
+coverage/*
+!coverage/coverage-summary.json
+!coverage/badges.svg

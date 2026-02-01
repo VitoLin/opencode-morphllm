@@ -4,7 +4,6 @@ import {
   expect,
   beforeEach,
   afterEach,
-  vi,
   beforeAll,
   afterAll,
 } from 'bun:test';
@@ -17,15 +16,15 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { env } from 'node:process';
 
-// Mock the opencode-config-dir module before importing config
-const mockConfigDir = join(tmpdir(), 'mock-opencode-config-test');
+// Use a real temporary directory for testing - no mocking needed
+const mockConfigDir = join(tmpdir(), 'mock-morph-config-test');
 const mockMorphJson = join(mockConfigDir, 'morph.json');
 const mockMorphJsonc = join(mockConfigDir, 'morph.jsonc');
 
-vi.mock('./opencode-config-dir', () => ({
-  getOpenCodeConfigDir: vi.fn(() => mockConfigDir),
-}));
+// Save original environment
+let originalEnv: Record<string, string | undefined>;
 
 import {
   getMorphPluginConfigPath,
@@ -35,6 +34,12 @@ import {
 
 describe('config.ts', () => {
   beforeAll(() => {
+    // Save original environment and set custom config dir
+    originalEnv = {
+      OPENCODE_CONFIG_DIR: env.OPENCODE_CONFIG_DIR,
+    };
+    env.OPENCODE_CONFIG_DIR = mockConfigDir;
+
     // Create mock config directory
     if (!existsSync(mockConfigDir)) {
       mkdirSync(mockConfigDir, { recursive: true });
@@ -42,6 +47,13 @@ describe('config.ts', () => {
   });
 
   afterAll(() => {
+    // Restore original environment
+    if (originalEnv.OPENCODE_CONFIG_DIR !== undefined) {
+      env.OPENCODE_CONFIG_DIR = originalEnv.OPENCODE_CONFIG_DIR;
+    } else {
+      delete env.OPENCODE_CONFIG_DIR;
+    }
+
     // Cleanup
     try {
       if (existsSync(mockMorphJson)) rmSync(mockMorphJson);

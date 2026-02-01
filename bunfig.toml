@@ -1,0 +1,4 @@
+[test]
+coverage = true
+coverageThreshold = 0.7
+coverageReporter = ["lcov"]
