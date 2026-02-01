@@ -1,0 +1,41 @@
+# Source files
+src/
+
+# Test files
+*.test.js
+*.test.ts
+*.test.d.ts
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Configuration files
+tsconfig.json
+.prettierrc
+.prettierignore
+bunfig.toml
+.gitleaks.toml
+
+# CI/GitHub
+.github/
+
+# Git hooks
+.husky/
+
+# Lock files
+bun.lock
+package-lock.json
+yarn.lock
+
+# Development directories
+.opencode/
+
+# Environment/config files
+.env
+.env.*
+.npmrc
+
+# Misc
+*.log
+.DS_Store
