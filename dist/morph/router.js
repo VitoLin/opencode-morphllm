@@ -31,10 +31,10 @@ function pickModelForDifficulty(difficulty) {
 export function createModelRouterHook() {
     return {
         'chat.message': async (input, output) => {
-            input.model = input.model ?? { providerID: '', modelID: '' };
             if (!MORPH_ROUTER_ENABLED) {
                 return;
             }
+            input.model = input.model ?? { providerID: '', modelID: '' };
             if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
                 if (sessionsWithModelSelected.has(input.sessionID)) {
                     return;

@@ -3,4 +3,4 @@ node_modules/
 .opencode/
 coverage/*
 !coverage/coverage-summary.json
-!coverage/badges.svg
+!coverage/coverage.svg

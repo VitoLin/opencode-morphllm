@@ -64,11 +64,11 @@ export function createModelRouterHook() {
       },
       output: { message: UserMessage; parts: Part[] }
     ): Promise<void> => {
-      input.model = input.model ?? { providerID: '', modelID: '' };
-
       if (!MORPH_ROUTER_ENABLED) {
         return;
       }
+
+      input.model = input.model ?? { providerID: '', modelID: '' };
 
       if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
         if (sessionsWithModelSelected.has(input.sessionID)) {

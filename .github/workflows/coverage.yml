@@ -1,0 +1,39 @@
+name: Coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+
+      - name: Install dependencies
+        run: $HOME/.bun/bin/bun install
+
+      - name: Run coverage
+        run: $HOME/.bun/bin/bun test
+
+      - name: Generate coverage badge
+        run: |
+          npx lcov-badge2 coverage/lcov.info -o coverage/coverage.svg
+
+      - name: Commit coverage badge
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add coverage/*.svg 2>/dev/null || echo "No badge files to add"
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push
