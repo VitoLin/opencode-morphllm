@@ -4,4 +4,4 @@
 gitleaks protect --staged --config .gitleaks.toml --verbose
 
 bun run build
-bun run format
+bunx lint-staged
