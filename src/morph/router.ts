@@ -7,6 +7,7 @@ import {
   MORPH_MODEL_HARD,
   MORPH_MODEL_DEFAULT,
   MORPH_ROUTER_PROMPT_CACHING_AWARE,
+  MORPH_ROUTER_ENABLED,
 } from '../shared/config';
 import type { Part, UserMessage } from '@opencode-ai/sdk';
 import type {
@@ -65,6 +66,10 @@ export function createModelRouterHook() {
     ): Promise<void> => {
       input.model = input.model ?? { providerID: '', modelID: '' };
 
+      if (!MORPH_ROUTER_ENABLED) {
+        return;
+      }
+
       if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
         if (sessionsWithModelSelected.has(input.sessionID)) {
           return;
@@ -89,7 +94,7 @@ export function createModelRouterHook() {
       input.model.providerID = finalProviderID;
       input.model.modelID = finalModelID;
 
-      if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
+      if (MORPH_ROUTER_ENABLED && MORPH_ROUTER_PROMPT_CACHING_AWARE) {
         sessionsWithModelSelected.add(input.sessionID);
       }
     },

@@ -1,5 +1,5 @@
 import { MorphClient } from '@morphllm/morphsdk';
-import { API_KEY, MORPH_MODEL_EASY, MORPH_MODEL_MEDIUM, MORPH_MODEL_HARD, MORPH_MODEL_DEFAULT, MORPH_ROUTER_PROMPT_CACHING_AWARE, } from '../shared/config';
+import { API_KEY, MORPH_MODEL_EASY, MORPH_MODEL_MEDIUM, MORPH_MODEL_HARD, MORPH_MODEL_DEFAULT, MORPH_ROUTER_PROMPT_CACHING_AWARE, MORPH_ROUTER_ENABLED, } from '../shared/config';
 // Lazy initialization to allow mocking in tests
 let morph = null;
 const sessionsWithModelSelected = new Set();
@@ -32,6 +32,9 @@ export function createModelRouterHook() {
     return {
         'chat.message': async (input, output) => {
             input.model = input.model ?? { providerID: '', modelID: '' };
+            if (!MORPH_ROUTER_ENABLED) {
+                return;
+            }
             if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
                 if (sessionsWithModelSelected.has(input.sessionID)) {
                     return;
@@ -48,7 +51,7 @@ export function createModelRouterHook() {
             const finalModelID = chosen.modelID || input.model.modelID;
             input.model.providerID = finalProviderID;
             input.model.modelID = finalModelID;
-            if (MORPH_ROUTER_PROMPT_CACHING_AWARE) {
+            if (MORPH_ROUTER_ENABLED && MORPH_ROUTER_PROMPT_CACHING_AWARE) {
                 sessionsWithModelSelected.add(input.sessionID);
             }
         },

@@ -18,6 +18,7 @@ vi.mock('../shared/config', () => ({
   MORPH_MODEL_HARD: 'hard/hard',
   MORPH_MODEL_DEFAULT: 'default/default',
   MORPH_ROUTER_PROMPT_CACHING_AWARE: false,
+  MORPH_ROUTER_ENABLED: true,
 }));
 
 import { createModelRouterHook, extractPromptText } from './router';
