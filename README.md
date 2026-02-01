@@ -1,5 +1,9 @@
 # MorphLLM OpenCode Plugin
 
+[![coverage](https://github.com/VitoLin/opencode-morphllm/blob/main/coverage/badges.svg)](https://www.npmjs.com/package/opencode-morphllm)
+[![npm](https://img.shields.io/npm/v/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
+[![downloads](https://img.shields.io/npm/dt/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
+
 This is an OpenCode Plugin for [MorphLLM](https://morphllm.com/). This plugin just adds in `edit_file` and `warpgrep_codebase_search` from MorphLLM to your agent configs as well as the intelligent model router for choosing different models based on the difficulty of the prompt.
 
 Github: https://github.com/VitoLin/opencode-morphllm
