@@ -2,10 +2,28 @@ import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-interface OpenCodeConfigDirOptions {
-  binary: 'opencode' | 'opencode-desktop';
+export type OpenCodeBinaryType = 'opencode' | 'opencode-desktop';
+
+export interface OpenCodeConfigDirOptions {
+  binary: OpenCodeBinaryType;
   version?: string | null;
   checkExisting?: boolean;
+}
+
+export interface OpenCodeConfigPaths {
+  configDir: string;
+  configJson: string;
+  configJsonc: string;
+  packageJson: string;
+  omoConfig: string;
+}
+
+export const TAURI_APP_IDENTIFIER = 'ai.opencode.desktop';
+export const TAURI_APP_IDENTIFIER_DEV = 'ai.opencode.desktop.dev';
+
+export function isDevBuild(version: string | null | undefined): boolean {
+  if (!version) return false;
+  return version.includes('-dev') || version.includes('.dev');
 }
 
 function getTauriConfigDir(identifier: string): string {
@@ -63,15 +81,76 @@ function getCliConfigDir(): string {
 export function getOpenCodeConfigDir(
   options: OpenCodeConfigDirOptions
 ): string {
-  if (options.binary === 'opencode-desktop') {
-    const version = options.version;
-    const isDev =
-      !!version && (version.includes('-dev') || version.includes('.dev'));
-    const identifier = isDev
-      ? 'ai.opencode.desktop.dev'
-      : 'ai.opencode.desktop';
-    return getTauriConfigDir(identifier);
+  const { binary, version, checkExisting = true } = options;
+
+  if (binary === 'opencode') {
+    return getCliConfigDir();
   }
 
-  return getCliConfigDir();
+  const identifier = isDevBuild(version)
+    ? TAURI_APP_IDENTIFIER_DEV
+    : TAURI_APP_IDENTIFIER;
+  const tauriDir = getTauriConfigDir(identifier);
+
+  if (checkExisting) {
+    const legacyDir = getCliConfigDir();
+    const legacyConfig = join(legacyDir, 'opencode.json');
+    const legacyConfigC = join(legacyDir, 'opencode.jsonc');
+
+    if (existsSync(legacyConfig) || existsSync(legacyConfigC)) {
+      return legacyDir;
+    }
+  }
+
+  return tauriDir;
+}
+
+export function getOpenCodeConfigPaths(
+  options: OpenCodeConfigDirOptions
+): OpenCodeConfigPaths {
+  const configDir = getOpenCodeConfigDir(options);
+
+  return {
+    configDir,
+    configJson: join(configDir, 'opencode.json'),
+    configJsonc: join(configDir, 'opencode.jsonc'),
+    packageJson: join(configDir, 'package.json'),
+    omoConfig: join(configDir, 'oh-my-opencode.json'),
+  };
+}
+
+export function detectExistingConfigDir(
+  binary: OpenCodeBinaryType,
+  version?: string | null
+): string | null {
+  const locations: string[] = [];
+
+  const envConfigDir = process.env.OPENCODE_CONFIG_DIR?.trim();
+  if (envConfigDir) {
+    locations.push(resolve(envConfigDir));
+  }
+
+  if (binary === 'opencode-desktop') {
+    const identifier = isDevBuild(version)
+      ? TAURI_APP_IDENTIFIER_DEV
+      : TAURI_APP_IDENTIFIER;
+    locations.push(getTauriConfigDir(identifier));
+
+    if (isDevBuild(version)) {
+      locations.push(getTauriConfigDir(TAURI_APP_IDENTIFIER));
+    }
+  }
+
+  locations.push(getCliConfigDir());
+
+  for (const dir of locations) {
+    const configJson = join(dir, 'opencode.json');
+    const configJsonc = join(dir, 'opencode.jsonc');
+
+    if (existsSync(configJson) || existsSync(configJsonc)) {
+      return dir;
+    }
+  }
+
+  return null;
 }
