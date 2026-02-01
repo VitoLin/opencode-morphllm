@@ -27,7 +27,8 @@ Example configs:
     "MORPH_MODEL_EASY": "github-copilot/gpt-5-mini",
     "MORPH_MODEL_MEDIUM": "opencode/minimax-m2.1-free",
     "MORPH_MODEL_HARD": "github-copilot/gemini-2.5-pro",
-    "MORPH_ROUTER_ENABLED": true
+    "MORPH_ROUTER_ENABLED": true,
+    "MORPH_ROUTER_PROMPT_CACHING_AWARE": true
   }
 }
 ```
@@ -40,7 +41,8 @@ Legacy format (still supported):
   "MORPH_MODEL_EASY": "github-copilot/gpt-5-mini",
   "MORPH_MODEL_MEDIUM": "opencode/minimax-m2.1-free",
   "MORPH_MODEL_HARD": "github-copilot/gemini-2.5-pro",
-  "MORPH_ROUTER_ENABLED": true
+  "MORPH_ROUTER_ENABLED": true,
+  "MORPH_ROUTER_PROMPT_CACHING_AWARE": true
 }
 ```
 

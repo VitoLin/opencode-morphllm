@@ -11,7 +11,7 @@ export function getMorphPluginConfigPath(): string {
 
 interface MorphRouterConfigs {
   MORPH_ROUTER_ENABLED?: boolean;
-  MORPH_ROUTER_ONLY_FIRST_MESSAGE?: boolean;
+  MORPH_ROUTER_PROMPT_CACHING_AWARE?: boolean;
   MORPH_MODEL_EASY?: string;
   MORPH_MODEL_MEDIUM?: string;
   MORPH_MODEL_HARD?: string;
@@ -23,7 +23,7 @@ interface MorphConfig {
   MORPH_ROUTER_CONFIGS?: MorphRouterConfigs;
   // Legacy fields for backward compatibility
   MORPH_ROUTER_ENABLED?: boolean;
-  MORPH_ROUTER_ONLY_FIRST_MESSAGE?: boolean;
+  MORPH_ROUTER_PROMPT_CACHING_AWARE?: boolean;
   MORPH_MODEL_EASY?: string;
   MORPH_MODEL_MEDIUM?: string;
   MORPH_MODEL_HARD?: string;
@@ -112,7 +112,7 @@ export const MORPH_MODEL_DEFAULT =
   MORPH_MODEL_MEDIUM;
 export const MORPH_ROUTER_ENABLED =
   routerConfigs.MORPH_ROUTER_ENABLED ?? config.MORPH_ROUTER_ENABLED ?? true;
-export const MORPH_ROUTER_ONLY_FIRST_MESSAGE =
-  routerConfigs.MORPH_ROUTER_ONLY_FIRST_MESSAGE ??
-  config.MORPH_ROUTER_ONLY_FIRST_MESSAGE ??
+export const MORPH_ROUTER_PROMPT_CACHING_AWARE =
+  routerConfigs.MORPH_ROUTER_PROMPT_CACHING_AWARE ??
+  config.MORPH_ROUTER_PROMPT_CACHING_AWARE ??
   false;

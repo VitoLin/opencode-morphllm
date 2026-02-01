@@ -17,7 +17,7 @@ vi.mock('../shared/config', () => ({
   MORPH_MODEL_MEDIUM: 'medium/medium',
   MORPH_MODEL_HARD: 'hard/hard',
   MORPH_MODEL_DEFAULT: 'default/default',
-  MORPH_ROUTER_ONLY_FIRST_MESSAGE: false,
+  MORPH_ROUTER_PROMPT_CACHING_AWARE: false,
 }));
 
 import { createModelRouterHook, extractPromptText } from './router';
@@ -234,7 +234,7 @@ describe('router.ts', () => {
       expect((input as any).model.modelID).toBe('hard');
     });
 
-    it('should route all messages when MORPH_ROUTER_ONLY_FIRST_MESSAGE is disabled', async () => {
+    it('should route all messages when MORPH_ROUTER_PROMPT_CACHING_AWARE is disabled', async () => {
       const hook = createModelRouterHook();
       const classify = vi
         .fn()
