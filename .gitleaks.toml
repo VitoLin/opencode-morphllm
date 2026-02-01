@@ -1,0 +1,6 @@
+title = "Gitleaks Config"
+
+[[rules]]
+id = "morph-key"
+description = "Morph API Key"
+regex = "sk-[A-Za-z0-9_-]{48}"

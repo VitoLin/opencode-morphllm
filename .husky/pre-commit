@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-bunx lint-staged
+gitleaks protect --staged --config .gitleaks.toml --verbose
+
+bun run build
+bun run format
