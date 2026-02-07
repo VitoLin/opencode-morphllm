@@ -1,6 +1,6 @@
 # MorphLLM OpenCode Plugin
 
-[![coverage](https://github.com/VitoLin/opencode-morphllm/blob/main/coverage/coverage.svg)](https://www.npmjs.com/package/opencode-morphllm)
+[![coverage](coverage/coverage.svg)](https://www.npmjs.com/package/opencode-morphllm)
 [![npm](https://img.shields.io/npm/v/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
 [![downloads](https://img.shields.io/npm/dt/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
 
@@ -40,7 +40,9 @@ Add the plugin to your OpenCode configuration at `~/.config/opencode/opencode.js
 
 ### 2. Configure MorphLLM
 
-Create a configuration file at `~/.config/opencode/morph.json`:
+Create a configuration file at `~/.config/opencode/morph.json` or for repo level configs, you can create the config at your repo root at `.opencode/morph.json`.
+
+Example:
 
 ```json
 {
@@ -67,14 +69,47 @@ Find available models at [models.dev](https://models.dev).
 
 ### Router Settings (inside `MORPH_ROUTER_CONFIGS`)
 
-| Option                              | Description                                               | Default              |
-| ----------------------------------- | --------------------------------------------------------- | -------------------- |
-| `MORPH_ROUTER_ENABLED`              | Enable/disable the intelligent router                     | `true`               |
-| `MORPH_MODEL_EASY`                  | Model for easy prompts (simple questions, formatting)     | -                    |
-| `MORPH_MODEL_MEDIUM`                | Model for medium prompts (standard coding tasks)          | -                    |
-| `MORPH_MODEL_HARD`                  | Model for hard prompts (complex architecture, debugging)  | -                    |
-| `MORPH_MODEL_DEFAULT`               | Fallback model when classification fails                  | `MORPH_MODEL_MEDIUM` |
-| `MORPH_ROUTER_PROMPT_CACHING_AWARE` | Stick to first model per session for caching optimization | `false`              |
+| Option                              | Description                                               | Default                         |
+| ----------------------------------- | --------------------------------------------------------- | ------------------------------- |
+| `MORPH_ROUTER_ENABLED`              | Enable/disable the intelligent router                     | `true`                          |
+| `MORPH_MODEL_EASY`                  | Model for easy prompts (simple questions, formatting)     | `your currently selected model` |
+| `MORPH_MODEL_MEDIUM`                | Model for medium prompts (standard coding tasks)          | `your currently selected model` |
+| `MORPH_MODEL_HARD`                  | Model for hard prompts (complex architecture, debugging)  | `your currently selected model` |
+| `MORPH_MODEL_DEFAULT`               | Fallback model when classification fails                  | `MORPH_MODEL_MEDIUM`            |
+| `MORPH_ROUTER_PROMPT_CACHING_AWARE` | Stick to first model per session for caching optimization | `false`                         |
+
+> Note about router enablement
+>
+> - The router will be automatically disabled if none of the model slots (`MORPH_MODEL_EASY`, `MORPH_MODEL_MEDIUM`, `MORPH_MODEL_HARD`) are configured (i.e., all are empty strings). This prevents the router from being active when there are no target models configured. An explicit `MORPH_ROUTER_ENABLED: false` in your config will also disable the router even if models are present.
+
+### System Message Customization
+
+| Option                 | Description                                                | Default   |
+| ---------------------- | ---------------------------------------------------------- | --------- |
+| `MORPH_SYSTEM_MESSAGE` | Custom system message appended to OpenCode's system prompt | See below |
+
+The `MORPH_SYSTEM_MESSAGE` setting allows you to customize or override the default system message that MorphLLM appends to OpenCode's system prompt. This message guides the AI on using Morph's MCP tools effectively.
+
+**Default message:**
+
+```
+You **MUST** consider using morph_mcp. For editing files, consider using morph_mcp_edit_file. For searching the code base, consider using warpgrep_codebase_search
+```
+
+**When to customize:**
+
+- You want to emphasize different tool preferences for your workflow
+- You need to add project-specific conventions or guidelines
+- You want to disable the default guidance entirely (set to empty string `""`)
+
+**Example:**
+
+```json
+{
+  "MORPH_API_KEY": "your_morph_api_key_here",
+  "MORPH_SYSTEM_MESSAGE": "Your custom system message here"
+}
+```
 
 ### Model Format
 
@@ -137,31 +172,7 @@ When `MORPH_ROUTER_PROMPT_CACHING_AWARE` is enabled:
 
 ## Development
 
-To work on the plugin locally:
-
-1. Clone the repository
-2. Point OpenCode to your local copy in `~/.config/opencode/opencode.json`:
-
-```json
-{
-  "plugins": ["/path/to/morph-opencode-plugin/"]
-}
-```
-
-3. Changes are immediately reflected when you run OpenCode
-
-### Scripts
-
-```bash
-# Build
-bun run build
-
-# Test
-bun test
-
-# Format
-bun run format
-```
+See [DEVELOPMENT.md](DEVELOPMENT.md) for setup instructions and development notes.
 
 ## Troubleshooting
 
