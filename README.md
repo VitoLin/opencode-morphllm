@@ -1,6 +1,6 @@
 # MorphLLM OpenCode Plugin
 
-[![coverage](coverage/coverage.svg)](https://www.npmjs.com/package/opencode-morphllm)
+[![coverage](https://github.com/VitoLin/opencode-morphllm/blob/main/coverage/coverage.svg)](https://www.npmjs.com/package/opencode-morphllm)
 [![npm](https://img.shields.io/npm/v/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
 [![downloads](https://img.shields.io/npm/dt/opencode-morphllm?style=flat-square)](https://www.npmjs.com/package/opencode-morphllm)
 
